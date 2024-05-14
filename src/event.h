@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "errors.hpp"
+
 struct Event {
     int hour;
     int minute;
