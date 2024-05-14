@@ -7,7 +7,7 @@
 
 int main(int argc, char** argv) {
     std::ifstream file;
-    unsigned int tableCount, lineNumber, rate;
+    unsigned int tablesCount, lineNumber, rate;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
     std::vector<Computer> computers;
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         std::exit(1);
     }
 
-    file >> tableCount >> timeStart >> timeEnd >> rate;
+    file >> tablesCount >> timeStart >> timeEnd >> rate;
     lineNumber = 4;
     while (file.good()) {
         std::string timeEvent, clientName;
@@ -33,8 +33,11 @@ int main(int argc, char** argv) {
     }
     file.close();
 
-    for(int i = 1; i <= tableCount; i++)
-        computers.emplace_back(i, rate);
+    Event::vectorComputers(tablesCount, rate);
 
+    while (!events.empty()) {
+        events.front().run();
+        events.pop();
+    }
     return 0;
 }
