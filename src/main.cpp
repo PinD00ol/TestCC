@@ -39,10 +39,15 @@ int main(int argc, char** argv) {
     Event::timeStartEnd(timeStart, timeEnd);
 
     while (!events.empty()) {
+        std::string time = events.front().time();
+        if(time > timeEnd)
+            break;
         events.front().runEvent();
         events.pop();
     }
 
+    Event::kickClients();
     Event::paymentComputers();
+
     return 0;
 }
