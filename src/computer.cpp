@@ -28,8 +28,8 @@ std::string Computer::name() const {
 }
 
 std::string Computer::time() const {
-    return (timeBusyHours < 10 ? '0' + std::to_string(timeBusyHours) : std::to_string(timeBusyHours)) + ':'
-           + (timeStartMinutes < 10 ? '0' + std::to_string(timeBusyMinutes) : std::to_string(timeStartMinutes));
+    return (timeBusyHours < 10 ? "0" : "") + std::to_string(timeBusyHours) + ':'
+           + (timeStartMinutes < 10 ? "0" : "") + std::to_string(timeStartMinutes);
 }
 
 bool Computer::isBusy() const {
