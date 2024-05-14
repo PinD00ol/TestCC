@@ -17,8 +17,8 @@ public:
 
     static void vectorComputers(unsigned int tablesCount, unsigned int rate);
     static void timeStartEnd(std::string start, std::string end);
-    static void paymentComputers();
     static void kickClients();
+    static void paymentComputers();
 
 private:
     static std::vector<Computer> computers;

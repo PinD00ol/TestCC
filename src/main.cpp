@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     Event::vectorComputers(tablesCount, rate);
     Event::timeStartEnd(timeStart, timeEnd);
 
+    std::cout << timeStart << '\n';
     while (!events.empty()) {
         std::string time = events.front().time();
         if(time > timeEnd)
@@ -45,8 +46,8 @@ int main(int argc, char** argv) {
         events.front().runEvent();
         events.pop();
     }
-
     Event::kickClients();
+    std::cout << timeEnd << '\n';
     Event::paymentComputers();
 
     return 0;

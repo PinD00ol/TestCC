@@ -91,9 +91,11 @@ void Event::runEvent() {
                     unsigned int table = clients[clientID].tableNumber - 1;
                     computers[table].busyOff(timeEvent);
                     bool hasFounded = false;
+
                     while (!waitingClients.empty() && !hasFounded) {
                         Client client = waitingClients.front();
                         waitingClients.pop();
+
                         for (auto c : clients)
                             if (c.clientName == client.clientName) {
                                 computers[table].busyOn(client.clientName, timeEvent);
