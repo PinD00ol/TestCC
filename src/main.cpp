@@ -10,6 +10,7 @@ int main(int argc, char** argv) {
     unsigned int tableCount, lineNumber, payment;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
+    std::vector<Computer> computers;
 
     if(argc > 1)
         file.open(argv[1]);
@@ -29,5 +30,9 @@ int main(int argc, char** argv) {
         events.emplace(idEvent, numberTable, clientName, timeEvent);
     }
     file.close();
+
+    for(int i = 1; i <= tableCount; i++)
+        computers.emplace_back(i);
+
     return 0;
 }
