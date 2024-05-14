@@ -54,19 +54,19 @@ void Computer::busyOff(std::string time) {
         int hoursDifference = timeHours - timeStartHours;
         int minutesDifference = timeMinutes - timeStartMinutes;
 
-        if(minutesDifference < 0) {
+        if (minutesDifference < 0) {
             minutesDifference = 0 - minutesDifference;
             hoursDifference--;
             payment += rate * (hoursDifference + 1);
         }
-        else if(minutesDifference > 0)
+        else if (minutesDifference > 0)
             payment += rate * (hoursDifference + 1);
         else
             payment += rate * hoursDifference;
 
         timeBusyHours += hoursDifference;
         timeBusyMinutes += minutesDifference;
-        if(timeBusyMinutes > 59) {
+        if (timeBusyMinutes > 59) {
             timeBusyMinutes -= 60;
             timeBusyHours++;
         }

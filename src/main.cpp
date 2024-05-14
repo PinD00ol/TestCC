@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     std::queue<Event> events;
     std::vector<Computer> computers;
 
-    if(argc > 1)
+    if (argc > 1)
         file.open(argv[1]);
     else {
         std::cerr << "Event file of club is missing!";
@@ -26,8 +26,10 @@ int main(int argc, char** argv) {
         int idEvent;
         unsigned int numberTable;
         file >> timeEvent >> idEvent >> clientName;
-        if(idEvent == 4) file >> numberTable;
-        else numberTable = 0;
+        if (idEvent == 4)
+            file >> numberTable;
+        else
+            numberTable = 0;
         events.emplace(idEvent, numberTable, clientName, timeEvent);
         lineNumber++;
     }
