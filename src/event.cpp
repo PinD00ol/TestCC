@@ -1,4 +1,4 @@
-#include "event.h"
+#include "event.hpp"
 
 Event::Event(int h, int m, int id, std::string name, int t) {
     hour = h;

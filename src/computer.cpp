@@ -1,4 +1,4 @@
-#include "computer.h"
+#include "computer.hpp"
 
 Computer::Computer(int n) {
     number = n;
