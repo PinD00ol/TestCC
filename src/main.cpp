@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
     }
 
     file >> tableCount >> timeStart >> timeEnd >> rate;
+    lineNumber = 4;
     while (file.good()) {
         std::string timeEvent, clientName;
         int idEvent;
@@ -28,11 +29,12 @@ int main(int argc, char** argv) {
         if(idEvent == 4) file >> numberTable;
         else numberTable = 0;
         events.emplace(idEvent, numberTable, clientName, timeEvent);
+        lineNumber++;
     }
     file.close();
 
     for(int i = 1; i <= tableCount; i++)
-        computers.emplace_back(i);
+        computers.emplace_back(i, rate);
 
     return 0;
 }

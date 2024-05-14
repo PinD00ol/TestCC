@@ -22,9 +22,12 @@ private:
     unsigned int rate;
     unsigned int payment;
 
+    int timeStartHours;
+    int timeStartMinutes;
+    int timeBusyHours;
+    int timeBusyMinutes;
+
     std::string clientName;
-    std::string timeStart;
-    std::string timeBusy;
 
     bool busy;
 };

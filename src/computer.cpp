@@ -5,9 +5,12 @@ Computer::Computer(unsigned int n, unsigned int r) {
     rate = r;
     payment = 0;
 
+    timeStartHours = 0;
+    timeStartMinutes = 0;
+    timeBusyHours = 0;
+    timeBusyMinutes = 0;
+
     clientName = "";
-    timeStart = "00:00";
-    timeBusy = "00:00";
 
     busy = false;
 }
@@ -25,7 +28,8 @@ std::string Computer::name() const {
 }
 
 std::string Computer::time() const {
-    return timeBusy;
+    return (timeBusyHours < 10 ? '0' + std::to_string(timeBusyHours) : std::to_string(timeBusyHours)) + ':'
+           + (timeStartMinutes < 10 ? '0' + std::to_string(timeBusyMinutes) : std::to_string(timeStartMinutes));
 }
 
 bool Computer::isBusy() const {
@@ -34,8 +38,10 @@ bool Computer::isBusy() const {
 
 void Computer::busyOn(std::string name, std::string time) {
     if(!busy) {
+        timeStartHours = static_cast<int>(time[0] + time[1]);
+        timeStartMinutes = static_cast<int>(time[3] + time[4]);
+
         clientName = name;
-        timeStart = time;
         busy = true;
     }
 }
@@ -44,10 +50,6 @@ void Computer::busyOff(std::string time) {
     if(busy) {
         int timeHours = static_cast<int>(time[0] + time[1]);
         int timeMinutes = static_cast<int>(time[3] + time[4]);
-        int timeStartHours = static_cast<int>(timeStart[0] + timeStart[1]);
-        int timeStartMinutes = static_cast<int>(timeStart[3] + timeStart[4]);
-        int timeBusyHours = static_cast<int>(timeBusy[0] + timeBusy[1]);
-        int timeBusyMinutes = static_cast<int>(timeBusy[3] + timeBusy[4]);
 
         int hoursDifference = timeHours - timeStartHours;
         int minutesDifference = timeMinutes - timeStartMinutes;
@@ -69,11 +71,7 @@ void Computer::busyOff(std::string time) {
             timeBusyHours++;
         }
 
-        timeBusy = (timeBusyHours < 10 ? '0' + std::to_string(timeBusyHours) : std::to_string(timeBusyHours)) + ':'
-                 + (timeStartMinutes < 10 ? '0' + std::to_string(timeBusyMinutes) : std::to_string(timeStartMinutes));
-
         clientName = "";
-        timeStart = "00:00";
         busy = false;
     }
 }
