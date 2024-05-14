@@ -1,9 +1,8 @@
 #include "event.hpp"
 
-Event::Event(int h, int m, int id, std::string name, int t) {
-    hour = h;
-    minute = m;
+Event::Event(int id, unsigned int table, std::string name, std::string time) {
     idEvent = id;
     clientName = name;
-    table = t;
+    numberTable = table;
+    timeEvent = time;
 }

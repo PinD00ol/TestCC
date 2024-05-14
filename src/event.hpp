@@ -5,10 +5,10 @@
 #include "errors.hpp"
 
 struct Event {
-    int hour;
-    int minute;
     int idEvent;
-    int table;
+    unsigned int numberTable;
     std::string clientName;
-    Event(int h, int m, int id, std::string name, int t);
+    std::string timeEvent;
+
+    Event(int id, unsigned int table, std::string name, std::string time);
 };
