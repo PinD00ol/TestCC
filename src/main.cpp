@@ -7,7 +7,7 @@
 
 int main(int argc, char** argv) {
     std::ifstream file;
-    unsigned int tableCount, lineNumber, payment;
+    unsigned int tableCount, lineNumber, rate;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
     std::vector<Computer> computers;
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         std::exit(1);
     }
 
-    file >> tableCount >> timeStart >> timeEnd >> payment;
+    file >> tableCount >> timeStart >> timeEnd >> rate;
     while (file.good()) {
         std::string timeEvent, clientName;
         int idEvent;
