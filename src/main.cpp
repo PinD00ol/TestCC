@@ -34,10 +34,13 @@ int main(int argc, char** argv) {
     file.close();
 
     Event::vectorComputers(tablesCount, rate);
+    Event::timeStartEnd(timeStart, timeEnd);
 
     while (!events.empty()) {
-        events.front().run();
+        events.front().runEvent();
         events.pop();
     }
+
+    Event::paymentComputers();
     return 0;
 }
