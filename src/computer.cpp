@@ -12,9 +12,20 @@ int Computer::computerNumber() const {
     return number;
 }
 
-void Computer::changeBusy() {
-    if(busy)
-        busy = false;
-    else
+std::string Computer::name() const {
+    return clientName;
+}
+
+void Computer::busyOn(std::string name) {
+    if(!busy) {
+        clientName = name;
         busy = true;
+    }
+}
+
+void Computer::busyOff() {
+    if(busy) {
+        clientName = "";
+        busy = false;
+    }
 }
