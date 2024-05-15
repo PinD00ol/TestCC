@@ -2,7 +2,6 @@
 #include <fstream>
 #include <queue>
 
-#include "computer.hpp"
 #include "event.hpp"
 
 int main(int argc, char** argv) {
@@ -46,7 +45,12 @@ int main(int argc, char** argv) {
         events.front().runEvent();
         events.pop();
     }
+
     Event::kickClients();
+    while (!events.empty()) {
+        events.front().runEvent();
+        events.pop();
+    }
     std::cout << timeEnd << '\n';
     Event::paymentComputers();
 
