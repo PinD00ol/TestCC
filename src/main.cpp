@@ -16,20 +16,37 @@ int main(int argc, char** argv) {
         std::cerr << "Event file of club is missing!";
         std::exit(1);
     }
+    try {
+        lineNumber = 1;
+        std::string research;
+        file >> research;
+        tablesCount = std::stoi(research);
 
-    file >> tablesCount >> timeStart >> timeEnd >> rate;
-    lineNumber = 4;
-    while (file.good()) {
-        std::string timeEvent, clientName;
-        int idEvent;
-        unsigned int numberTable;
-        file >> timeEvent >> idEvent >> clientName;
-        if (idEvent == 2)
-            file >> numberTable;
-        else
-            numberTable = 0;
-        events.emplace(idEvent, numberTable, clientName, timeEvent);
         lineNumber++;
+        file >> timeStart >> timeEnd;
+
+        lineNumber++;
+        file >> research;
+        rate = std::stoi(research);
+
+        lineNumber++;
+        while (file.good()) {
+            std::string timeEvent, clientName;
+            int idEvent;
+            unsigned int numberTable;
+            file >> timeEvent >> research >> clientName;
+            idEvent = std::stoi(research);
+            if (idEvent == 2)
+                file >> numberTable;
+            else
+                numberTable = 0;
+            events.emplace(idEvent, numberTable, clientName, timeEvent);
+            lineNumber++;
+        }
+    }
+    catch (std::exception e) {
+        std::cerr << "Mistake in line " << lineNumber << "!\n";
+        exit(2);
     }
     file.close();
 
