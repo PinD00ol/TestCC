@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <map>
 
 #include "errors.hpp"
 #include "computer.hpp"
-#include "client.hpp"
 
 class Event {
 public:
@@ -22,8 +22,8 @@ public:
 
 private:
     static std::vector<Computer> computers;
-    static std::vector<Client> clients;
-    static std::queue<Client> waitingClients;
+    static std::map<std::string, unsigned int> clients; //unsigned int отвечает за номер занятого стола
+    static std::queue<std::string> waitingClients;
     static std::string timeStart;
     static std::string timeEnd;
 
