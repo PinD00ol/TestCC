@@ -83,6 +83,7 @@ void Event::runEvent() {
 
                         if (clients.contains(client)) {
                             computers[table].busyOn(client, timeEvent);
+                            clients[client] = table + 1;
                             std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
                             break;
                         }

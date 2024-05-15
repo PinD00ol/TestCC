@@ -29,7 +29,7 @@ std::string Computer::name() const {
 
 std::string Computer::time() const {
     return (timeBusyHours < 10 ? "0" : "") + std::to_string(timeBusyHours) + ':'
-           + (timeStartMinutes < 10 ? "0" : "") + std::to_string(timeStartMinutes);
+           + (timeBusyMinutes < 10 ? "0" : "") + std::to_string(timeBusyMinutes);
 }
 
 bool Computer::isBusy() const {
@@ -38,8 +38,8 @@ bool Computer::isBusy() const {
 
 void Computer::busyOn(std::string name, std::string time) {
     if(!busy) {
-        timeStartHours = static_cast<int>(time[0] + time[1]);
-        timeStartMinutes = static_cast<int>(time[3] + time[4]);
+        timeStartHours = (time[0] - 48) * 10 + time[1] - 48;
+        timeStartMinutes = (time[3] - 48) * 10 + time[4] - 48;
 
         clientName = name;
         busy = true;
@@ -48,14 +48,14 @@ void Computer::busyOn(std::string name, std::string time) {
 
 void Computer::busyOff(std::string time) {
     if(busy) {
-        int timeHours = static_cast<int>(time[0] + time[1]);
-        int timeMinutes = static_cast<int>(time[3] + time[4]);
+        int timeHours = (time[0] - 48) * 10 + time[1] - 48;
+        int timeMinutes = (time[3] - 48) * 10 + time[4] - 48;
 
         int hoursDifference = timeHours - timeStartHours;
         int minutesDifference = timeMinutes - timeStartMinutes;
 
         if (minutesDifference < 0) {
-            minutesDifference = 0 - minutesDifference;
+            minutesDifference = 60 + minutesDifference;
             hoursDifference--;
             payment += rate * (hoursDifference + 1);
         }

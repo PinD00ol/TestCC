@@ -9,7 +9,6 @@ int main(int argc, char** argv) {
     unsigned int tablesCount, lineNumber, rate;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
-    std::vector<Computer> computers;
 
     if (argc > 1)
         file.open(argv[1]);
@@ -25,7 +24,7 @@ int main(int argc, char** argv) {
         int idEvent;
         unsigned int numberTable;
         file >> timeEvent >> idEvent >> clientName;
-        if (idEvent == 4)
+        if (idEvent == 2)
             file >> numberTable;
         else
             numberTable = 0;
@@ -42,7 +41,9 @@ int main(int argc, char** argv) {
         std::string time = events.front().time();
         if(time > timeEnd)
             break;
-        events.front().runEvent();
+        Event event = events.front();
+        event.runEvent();
+        //events.front().runEvent();
         events.pop();
     }
 
