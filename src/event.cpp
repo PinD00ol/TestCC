@@ -76,16 +76,14 @@ void Event::runEvent() {
                 if (clients[clientName] != 0) {
                     unsigned int table = clients[clientName] - 1;
                     computers[table].busyOff(timeEvent);
-                    bool hasFound = false;
 
-                    while (!waitingClients.empty() && !hasFound) {
+                    while (!waitingClients.empty()) {
                         std::string client = waitingClients.front();
                         waitingClients.pop();
 
                         if (clients.contains(client)) {
                             computers[table].busyOn(client, timeEvent);
                             std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
-                            hasFound = true;
                             break;
                         }
                     }
