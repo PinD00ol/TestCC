@@ -111,5 +111,17 @@ void Event::errorOutput(Errors error) {
 }
 
 void Event::kickClients() {
+    while (!waitingClients.empty())
+        waitingClients.pop();
+    for (const auto& client: clients) {
+        if(client.second != 0)
+            computers[client.second - 1].busyOff(timeEnd);
+        std::cout << timeEnd << " 11 " << client.first << '\n';
+    }
+    clients.clear();
+}
 
+void Event::paymentComputers() {
+    for (const auto& computer: computers)
+        std::cout << computer.computerNumber() << ' ' << computer.computerPayment() << ' ' << computer.time() << '\n';
 }
