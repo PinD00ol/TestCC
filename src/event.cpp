@@ -51,18 +51,26 @@ void Event::runEvent() {
             break;
         case 3:
             std::cout << timeEvent << " 3 " << clientName << '\n';
-            for (const auto& computer: computers)
-                if (!computer.isBusy()) {
-                    error = ICanWaitNoLonger;
-                    break;
-                }
+            error = ClientUnknown;
+            if (clients.contains(clientName))
+                error = NoErrors;
 
-            if(error == ICanWaitNoLonger)
+            if (error == ClientUnknown)
                 errorOutput(error);
-            else if(waitingClients.size() > computers.size())
-                std::cout << timeEvent << " 11 " << clientName << '\n';
-            else
-                waitingClients.push(clientName);
+            else {
+                for (const auto& computer: computers)
+                    if (!computer.isBusy()) {
+                        error = ICanWaitNoLonger;
+                        break;
+                    }
+
+                if(error == ICanWaitNoLonger)
+                    errorOutput(error);
+                else if(waitingClients.size() > computers.size())
+                    std::cout << timeEvent << " 11 " << clientName << '\n';
+                else
+                    waitingClients.push(clientName);
+            }
             break;
         case 4:
             std::cout << timeEvent << " 4 " << clientName << '\n';
@@ -106,7 +114,25 @@ void Event::timeStartEnd(std::string start, std::string end) {
 }
 
 void Event::errorOutput(Errors error) {
-    std::cout << timeEvent << " 13 " << error << (error == ICanWaitNoLonger ? "!" : "") << '\n';
+    std::string errString;
+    switch (error) {
+        case NotOpenYet:
+            errString = "NotOpenYet\n";
+            break;
+        case YouShallNotPass:
+            errString = "YouShallNotPass\n";
+            break;
+        case PlaceIsBusy:
+            errString = "PlaceIsBusy\n";
+            break;
+        case ICanWaitNoLonger:
+            errString = "ICanWaitNoLonger!\n";
+            break;
+        case ClientUnknown:
+            errString = "ClientUnknown\n";
+            break;
+    }
+    std::cout << timeEvent << " 13 " << errString;
 }
 
 void Event::kickClients() {

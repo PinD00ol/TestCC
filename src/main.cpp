@@ -41,9 +41,7 @@ int main(int argc, char** argv) {
         std::string time = events.front().time();
         if(time > timeEnd)
             break;
-        Event event = events.front();
-        event.runEvent();
-        //events.front().runEvent();
+        events.front().runEvent();
         events.pop();
     }
 
