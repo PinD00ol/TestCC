@@ -123,3 +123,9 @@ void Event::paymentComputers() {
     for (const auto& computer: computers)
         std::cout << computer.computerNumber() << ' ' << computer.computerPayment() << ' ' << computer.time() << '\n';
 }
+
+std::vector<Computer> Event::computers;
+std::map<std::string, unsigned int> Event::clients;
+std::queue<std::string> Event::waitingClients;
+std::string Event::timeStart = "00:00";
+std::string Event::timeEnd = "00:00";
