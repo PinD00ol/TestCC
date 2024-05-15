@@ -13,8 +13,10 @@ public:
     Event(int id, unsigned int table, std::string name, std::string time);
 
     std::string time();
-    void runEvent();
+    std::string lineEvent();
+    std::string runEvent();
 
+    static Computer computer(unsigned int n);
     static void vectorComputers(unsigned int tablesCount, unsigned int rate);
     static void timeStartEnd(std::string start, std::string end);
     static void kickClients();
@@ -32,5 +34,5 @@ private:
     std::string clientName;
     std::string timeEvent;
 
-    void errorOutput(Errors error);
+    std::string errorOutput(Errors error);
 };

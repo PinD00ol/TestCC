@@ -12,29 +12,33 @@ std::string Event::time() {
     return timeEvent;
 }
 
-void Event::runEvent() {
+std::string Event::lineEvent() {
+    return timeEvent + ' ' + std::to_string(idEvent) + ' ' + clientName
+        + (tableNumber == 0 ? "\n" : ' ' + std::to_string(tableNumber) + '\n');
+}
+
+std::string Event::runEvent() {
     Errors error = NoErrors;
+    std::string result = "";
     switch (idEvent) {
         case 1:
-            std::cout << timeEvent << " 1 " << clientName << '\n';
             if (timeEvent < timeStart || timeEvent > timeEnd)
                 error = NotOpenYet;
             else if(clients.contains(clientName))
                 error = YouShallNotPass;
 
             if (error != NoErrors)
-                errorOutput(error);
+                result = errorOutput(error);
             else
                 clients.insert({clientName, 0});
             break;
         case 2:
-            std::cout << timeEvent << " 2 " << clientName << ' '  << tableNumber << '\n';
             error = ClientUnknown;
             if (clients.contains(clientName))
                 error = NoErrors;
 
             if (error == ClientUnknown)
-                errorOutput(error);
+                result = errorOutput(error);
             else {
                 if (computers[tableNumber - 1].isBusy())
                     error = PlaceIsBusy;
@@ -46,7 +50,7 @@ void Event::runEvent() {
                 }
 
                 if(error == PlaceIsBusy)
-                    errorOutput(error);
+                    result = errorOutput(error);
             }
             break;
         case 3:
@@ -56,7 +60,7 @@ void Event::runEvent() {
                 error = NoErrors;
 
             if (error == ClientUnknown)
-                errorOutput(error);
+                result = errorOutput(error);
             else {
                 for (const auto& computer: computers)
                     if (!computer.isBusy()) {
@@ -65,7 +69,7 @@ void Event::runEvent() {
                     }
 
                 if(error == ICanWaitNoLonger)
-                    errorOutput(error);
+                    result = errorOutput(error);
                 else if(waitingClients.size() > computers.size())
                     std::cout << timeEvent << " 11 " << clientName << '\n';
                 else
@@ -79,7 +83,7 @@ void Event::runEvent() {
                 error = NoErrors;
 
             if (error == ClientUnknown)
-                errorOutput(error);
+                result = errorOutput(error);
             else {
                 if (clients[clientName] != 0) {
                     unsigned int table = clients[clientName] - 1;
@@ -100,8 +104,12 @@ void Event::runEvent() {
                 clients.erase(clientName);
             }
     }
+    return result;
 }
 
+Computer Event::computer(unsigned int n) {
+    return n >= computers.size() ? Computer(0, 0) : computers[n];
+}
 
 void Event::vectorComputers(unsigned int tablesCount, unsigned int rate) {
     for (int i = 1; i <= tablesCount; i++)
@@ -113,7 +121,7 @@ void Event::timeStartEnd(std::string start, std::string end) {
     timeEnd = end;
 }
 
-void Event::errorOutput(Errors error) {
+std::string Event::errorOutput(Errors error) {
     std::string errString;
     switch (error) {
         case NotOpenYet:
@@ -132,7 +140,7 @@ void Event::errorOutput(Errors error) {
             errString = "ClientUnknown\n";
             break;
     }
-    std::cout << timeEvent << " 13 " << errString;
+    return timeEvent + " 13 " + errString;
 }
 
 void Event::kickClients() {

@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
         std::string time = events.front().time();
         if(time > timeEnd)
             break;
-        events.front().runEvent();
+        std::cout << events.front().lineEvent() << events.front().runEvent();
         events.pop();
     }
 
