@@ -8,5 +8,4 @@ add_executable(TestCC)
 target_sources(TestCC PRIVATE
     "${CMAKE_SOURCE_DIR}/src/main.cpp"
     "${CMAKE_SOURCE_DIR}/src/computer.cpp"
-    "${CMAKE_SOURCE_DIR}/src/event.cpp"
-    "${CMAKE_SOURCE_DIR}/src/client.cpp")
+    "${CMAKE_SOURCE_DIR}/src/event.cpp")
