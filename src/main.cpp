@@ -4,9 +4,67 @@
 
 #include "event.hpp"
 
+bool isPositiveInteger(const std::string& research) {
+    bool result = true;
+    if(!research.empty()) {
+        if (research[0] < '1' || research[0] > '9')
+            result = false;
+        else {
+            for (int i = 1; i < research.size(); ++i) {
+                if (research[i] < '0' || research[i] > '9') {
+                    result = false;
+                    break;
+                }
+            }
+        }
+    }
+    else
+        result = false;
+    return result;
+}
+
+bool isRightTime(const std::string& time) {
+    bool result = true;
+    if(time.size() == 5) {
+        for (int i = 0; i < 5; ++i) {
+            switch (i) {
+                case 0:
+                case 1:
+                case 3:
+                case 4:
+                    if (time[i] < '0' || time[i] > '9')
+                        result = false;
+                    break;
+                case 2:
+                    if (time[i] != ':')
+                        result = false;
+                    break;
+            }
+        }
+    }
+    else
+        result = false;
+    return result;
+}
+
+bool isRightName(const std::string& name) {
+    bool result = true;
+    if(!name.empty()) {
+        for (auto c: name) {
+            if ((c < '0' && c != '-') || (c > '9' && c < 'a' && c != '_') || c > 'z') {
+                result = false;
+                break;
+            }
+        }
+    }
+    else
+        result = false;
+    return result;
+}
+
 int main(int argc, char** argv) {
     std::ifstream file;
-    unsigned int tablesCount, lineNumber, rate;
+    unsigned int tablesCount, rate;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
 
@@ -17,24 +75,29 @@ int main(int argc, char** argv) {
         std::exit(1);
     }
     try {
-        lineNumber = 1;
         std::string research;
         file >> research;
+        if(!isPositiveInteger(research))
+            throw std::invalid_argument("Mistake in line 1!\n");
         tablesCount = std::stoi(research);
 
-        lineNumber++;
         file >> timeStart >> timeEnd;
+        if(!isRightTime(timeStart) || !isRightTime(timeEnd))
+            throw std::invalid_argument("Mistake in line 2!\n");
 
-        lineNumber++;
         file >> research;
+        if(!isPositiveInteger(research))
+            throw std::invalid_argument("Mistake in line 3!\n");
         rate = std::stoi(research);
 
-        lineNumber++;
+        unsigned int lineNumber = 4;
         while (file.good()) {
             std::string timeEvent, clientName;
             int idEvent;
             unsigned int numberTable;
             file >> timeEvent >> research >> clientName;
+            if (!isRightTime(timeEvent) || !isPositiveInteger(research) || !isRightName(clientName))
+                throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
             idEvent = std::stoi(research);
             if (idEvent == 2)
                 file >> numberTable;
@@ -44,8 +107,8 @@ int main(int argc, char** argv) {
             lineNumber++;
         }
     }
-    catch (std::exception e) {
-        std::cerr << "Mistake in line " << lineNumber << "!\n";
+    catch (std::invalid_argument& e) {
+        std::cerr << e.what();
         exit(2);
     }
     file.close();
