@@ -62,6 +62,46 @@ bool isRightName(const std::string& name) {
     return result;
 }
 
+std::queue<Event> inputEvents(std::ifstream& file,unsigned int& tablesCount, unsigned int& rate, std::string& timeStart, std::string& timeEnd) {
+    std::string research;
+    std::queue<Event> events;
+    file >> research;
+    if(!isPositiveInteger(research))
+        throw std::invalid_argument("Mistake in the line 1!\n");
+    tablesCount = std::stoi(research);
+
+    file >> timeStart >> timeEnd;
+    if(!isRightTime(timeStart) || !isRightTime(timeEnd))
+        throw std::invalid_argument("Mistake in the line 2!\n");
+
+    file >> research;
+    if(!isPositiveInteger(research))
+        throw std::invalid_argument("Mistake in the line 3!\n");
+    rate = std::stoi(research);
+
+    unsigned int lineNumber = 4;
+    while (file.good()) {
+        std::string timeEvent, clientName;
+        int idEvent;
+        unsigned int numberTable;
+        file >> timeEvent >> research >> clientName;
+        if (!isRightTime(timeEvent) || !isPositiveInteger(research) || !isRightName(clientName))
+            throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
+        idEvent = std::stoi(research);
+        if (idEvent == 2) {
+            file >> research;
+            if(!isPositiveInteger(research))
+                throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
+            numberTable = std::stoi(research);
+        }
+        else
+            numberTable = 0;
+        events.emplace(idEvent, numberTable, clientName, timeEvent);
+        lineNumber++;
+    }
+    return events;
+}
+
 int main(int argc, char** argv) {
     std::ifstream file;
     unsigned int tablesCount, rate;
@@ -75,41 +115,7 @@ int main(int argc, char** argv) {
         std::exit(1);
     }
     try {
-        std::string research;
-        file >> research;
-        if(!isPositiveInteger(research))
-            throw std::invalid_argument("Mistake in line 1!\n");
-        tablesCount = std::stoi(research);
-
-        file >> timeStart >> timeEnd;
-        if(!isRightTime(timeStart) || !isRightTime(timeEnd))
-            throw std::invalid_argument("Mistake in line 2!\n");
-
-        file >> research;
-        if(!isPositiveInteger(research))
-            throw std::invalid_argument("Mistake in line 3!\n");
-        rate = std::stoi(research);
-
-        unsigned int lineNumber = 4;
-        while (file.good()) {
-            std::string timeEvent, clientName;
-            int idEvent;
-            unsigned int numberTable;
-            file >> timeEvent >> research >> clientName;
-            if (!isRightTime(timeEvent) || !isPositiveInteger(research) || !isRightName(clientName))
-                throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
-            idEvent = std::stoi(research);
-            if (idEvent == 2) {
-                file >> research;
-                if(!isPositiveInteger(research))
-                    throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
-                numberTable = std::stoi(research);
-            }
-            else
-                numberTable = 0;
-            events.emplace(idEvent, numberTable, clientName, timeEvent);
-            lineNumber++;
-        }
+        events = inputEvents(file, tablesCount, rate, timeStart, timeEnd);
     }
     catch (std::invalid_argument& e) {
         std::cerr << e.what();
