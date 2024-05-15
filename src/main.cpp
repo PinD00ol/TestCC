@@ -99,8 +99,12 @@ int main(int argc, char** argv) {
             if (!isRightTime(timeEvent) || !isPositiveInteger(research) || !isRightName(clientName))
                 throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
             idEvent = std::stoi(research);
-            if (idEvent == 2)
-                file >> numberTable;
+            if (idEvent == 2) {
+                file >> research;
+                if(!isPositiveInteger(research))
+                    throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
+                numberTable = std::stoi(research);
+            }
             else
                 numberTable = 0;
             events.emplace(idEvent, numberTable, clientName, timeEvent);
