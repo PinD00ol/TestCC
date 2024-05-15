@@ -17,14 +17,10 @@ void Event::runEvent() {
     switch (idEvent) {
         case 1:
             std::cout << timeEvent << " 1 " << clientName << '\n';
-            for (auto client: clients)
-                if (client.first == clientName) {
-                    error = YouShallNotPass;
-                    break;
-                }
-
             if (timeEvent < timeStart || timeEvent > timeEnd)
                 error = NotOpenYet;
+            else if(clients.contains(clientName))
+                error = YouShallNotPass;
 
             if (error != NoErrors)
                 errorOutput(error);
@@ -71,35 +67,34 @@ void Event::runEvent() {
         case 4:
             std::cout << timeEvent << " 4 " << clientName << '\n';
             error = ClientUnknown;
-            if (clients.contains(clientName)) {
+            if (clients.contains(clientName))
                 error = NoErrors;
 
-                if (error == ClientUnknown)
-                    errorOutput(error);
-                else {
-                    if (clients[clientName] != 0) {
-                        unsigned int table = clients[clientName] - 1;
-                        computers[table].busyOff(timeEvent);
-                        bool hasFound = false;
+            if (error == ClientUnknown)
+                errorOutput(error);
+            else {
+                if (clients[clientName] != 0) {
+                    unsigned int table = clients[clientName] - 1;
+                    computers[table].busyOff(timeEvent);
+                    bool hasFound = false;
 
-                        while (!waitingClients.empty() && !hasFound) {
-                            std::string client = waitingClients.front();
-                            waitingClients.pop();
+                    while (!waitingClients.empty() && !hasFound) {
+                        std::string client = waitingClients.front();
+                        waitingClients.pop();
 
-                            if (clients.contains(client)) {
-                                computers[table].busyOn(client, timeEvent);
-                                std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
-                                hasFound = true;
-                                break;
-                            }
+                        if (clients.contains(client)) {
+                            computers[table].busyOn(client, timeEvent);
+                            std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
+                            hasFound = true;
+                            break;
                         }
                     }
-                    clients.erase(clientName);
                 }
+                clients.erase(clientName);
             }
-            break;
     }
 }
+
 
 void Event::vectorComputers(unsigned int tablesCount, unsigned int rate) {
     for (int i = 1; i <= tablesCount; i++)
