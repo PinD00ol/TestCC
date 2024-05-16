@@ -4,14 +4,10 @@ project(TestCC)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/33af80a883ddc33d9c0fac0a5b4578301efb18de.zip
+add_subdirectory(
+        "${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest"
+        "googletest"
 )
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
 
 add_executable(
         TestCC
