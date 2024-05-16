@@ -71,13 +71,13 @@ std::string Event::runEvent() {
 
                 if(error == ICanWaitNoLonger) {
                     result = errorOutput(error);
-                    if(std::find(waitingClients.begin(), waitingClients.end(), clientName) != waitingClients.end())
+                    if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
                         waitingClients.push_back(clientName);
                 }
                 else if(waitingClients.size() > computers.size())
                     std::cout << timeEvent << " 11 " << clientName << '\n';
                 else
-                if(std::find(waitingClients.begin(), waitingClients.end(), clientName) != waitingClients.end())
+                if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
                     waitingClients.push_back(clientName);
             }
             break;
