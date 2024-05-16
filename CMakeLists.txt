@@ -25,6 +25,7 @@ add_executable(
         src/computer.cpp
         src/insertion.cpp
         tests/computer_test.cpp
+        tests/event_test.cpp
 )
 target_link_libraries(
         tests

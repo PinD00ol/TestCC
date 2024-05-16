@@ -57,30 +57,27 @@ std::string Event::runEvent() {
             }
             break;
         case 3:
-            error = ClientUnknown;
-            if (clients.contains(clientName))
-                error = NoErrors;
+            if(!clients.contains(clientName))
+                clients.insert({clientName, 0});
 
-            if (error == ClientUnknown)
-                result = errorOutput(error);
-            else {
-                for (const auto& computer: computers)
-                    if (!computer.isBusy()) {
-                        error = ICanWaitNoLonger;
-                        break;
-                    }
-
-                if(error == ICanWaitNoLonger) {
-                    result = errorOutput(error);
-                    if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
-                        waitingClients.push_back(clientName);
+            for (const auto& computer: computers)
+                if (!computer.isBusy()) {
+                    error = ICanWaitNoLonger;
+                    break;
                 }
-                else if(waitingClients.size() > computers.size())
-                    result = timeEvent + " 11 " + clientName + '\n';
-                else
+
+            if(error == ICanWaitNoLonger) {
+                result = errorOutput(error);
                 if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
                     waitingClients.push_back(clientName);
             }
+            else if(waitingClients.size() > computers.size()) {
+                result = timeEvent + " 11 " + clientName + '\n';
+                clients.erase(clientName);
+            }
+            else
+            if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
+                waitingClients.push_back(clientName);
             break;
         case 4:
             error = ClientUnknown;
@@ -100,7 +97,7 @@ std::string Event::runEvent() {
 
                         computers[table].busyOn(client, timeEvent);
                         clients[client] = table + 1;
-                        result = timeEvent + " 12 " + clientName + ' ' + std::to_string(tableNumber) + '\n';
+                        result = timeEvent + " 12 " + client + ' ' + std::to_string(table + 1) + '\n';
                     }
                 }
                 else {
