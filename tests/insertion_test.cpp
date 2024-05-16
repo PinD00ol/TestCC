@@ -12,11 +12,22 @@ TEST(InsertionTest, ReturnedEvents) {
     std::string expectedTimeEnd = "19:00";
     std::ifstream file;
     unsigned int expectedRate = 10;
-    unsigned int expectedTables = 4;
+    unsigned int expectedTables = 3;
 
     expectedEvents.emplace(1, 0, "client1", "08:48");
-    expectedEvents.emplace(1, 0, "client2", "09:41");
-    expectedEvents.emplace(1, 0, "client1", "09:48");
+    expectedEvents.emplace(1, 0, "client1", "09:41");
+    expectedEvents.emplace(1, 0, "client2", "09:48");
+    expectedEvents.emplace(3, 0, "client1", "09:52");
+    expectedEvents.emplace(2, 1, "client1", "09:54");
+    expectedEvents.emplace(2, 2, "client2", "10:25");
+    expectedEvents.emplace(1, 0, "client3", "10:58");
+    expectedEvents.emplace(2, 3, "client3", "10:59");
+    expectedEvents.emplace(1, 0, "client4", "11:30");
+    expectedEvents.emplace(2, 2, "client4", "11:35");
+    expectedEvents.emplace(3, 0, "client4", "11:45");
+    expectedEvents.emplace(4, 0, "client1", "12:33");
+    expectedEvents.emplace(4, 0, "client2", "12:43");
+    expectedEvents.emplace(4, 0, "client4", "15:52");
 
     file.open(path);
 
