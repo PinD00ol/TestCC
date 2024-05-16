@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "event.hpp"
 
 Event::Event(int id, unsigned int table, std::string name, std::string time) {
@@ -68,12 +69,16 @@ std::string Event::runEvent() {
                         break;
                     }
 
-                if(error == ICanWaitNoLonger)
+                if(error == ICanWaitNoLonger) {
                     result = errorOutput(error);
+                    if(std::find(waitingClients.begin(), waitingClients.end(), clientName) != waitingClients.end())
+                        waitingClients.push_back(clientName);
+                }
                 else if(waitingClients.size() > computers.size())
                     std::cout << timeEvent << " 11 " << clientName << '\n';
                 else
-                    waitingClients.push(clientName);
+                if(std::find(waitingClients.begin(), waitingClients.end(), clientName) != waitingClients.end())
+                    waitingClients.push_back(clientName);
             }
             break;
         case 4:
@@ -89,17 +94,19 @@ std::string Event::runEvent() {
                     unsigned int table = clients[clientName] - 1;
                     computers[table].busyOff(timeEvent);
 
-                    while (!waitingClients.empty()) {
+                    if (!waitingClients.empty()) {
                         std::string client = waitingClients.front();
-                        waitingClients.pop();
+                        waitingClients.pop_front();
 
-                        if (clients.contains(client)) {
-                            computers[table].busyOn(client, timeEvent);
-                            clients[client] = table + 1;
-                            std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
-                            break;
-                        }
+                        computers[table].busyOn(client, timeEvent);
+                        clients[client] = table + 1;
+                        std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
                     }
+                }
+                else {
+                    auto eventClient = std::find(waitingClients.begin(), waitingClients.end(), clientName);
+                    if(eventClient != waitingClients.end())
+                        waitingClients.erase(eventClient);
                 }
                 clients.erase(clientName);
             }
@@ -144,13 +151,12 @@ std::string Event::errorOutput(Errors error) {
 }
 
 void Event::kickClients() {
-    while (!waitingClients.empty())
-        waitingClients.pop();
     for (const auto& client: clients) {
         if(client.second != 0)
             computers[client.second - 1].busyOff(timeEnd);
         std::cout << timeEnd << " 11 " << client.first << '\n';
     }
+    waitingClients.clear();
     clients.clear();
 }
 
@@ -161,6 +167,6 @@ void Event::paymentComputers() {
 
 std::vector<Computer> Event::computers;
 std::map<std::string, unsigned int> Event::clients;
-std::queue<std::string> Event::waitingClients;
+std::list<std::string> Event::waitingClients;
 std::string Event::timeStart = "00:00";
 std::string Event::timeEnd = "00:00";

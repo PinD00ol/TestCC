@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <queue>
 #include <map>
+#include <list>
 
 #include "errors.hpp"
 #include "computer.hpp"
@@ -25,7 +25,7 @@ public:
 private:
     static std::vector<Computer> computers;
     static std::map<std::string, unsigned int> clients; //unsigned int отвечает за номер занятого стола
-    static std::queue<std::string> waitingClients;
+    static std::list<std::string> waitingClients;
     static std::string timeStart;
     static std::string timeEnd;
 

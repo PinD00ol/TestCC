@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     }
 
     Event::kickClients();
-    while (!events.empty()) {
+    while (!events.empty()) { //Если остались события, чьё время после закрытия
         events.front().runEvent();
         events.pop();
     }
