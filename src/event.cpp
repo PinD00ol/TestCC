@@ -42,20 +42,21 @@ std::string Event::runEvent() {
                 result = errorOutput(error);
             else {
                 if (computers[tableNumber - 1].isBusy())
-                    error = PlaceIsBusy;
+                    result = errorOutput(PlaceIsBusy);
                 else {
                     if (clients[clientName] != 0)
                         computers[clients[clientName] - 1].busyOff(timeEvent);
                     computers[tableNumber - 1].busyOn(clientName, timeEvent);
                     clients[clientName] = tableNumber;
-                }
 
-                if(error == PlaceIsBusy)
-                    result = errorOutput(error);
+                    auto eventClient = std::find(waitingClients.begin(), waitingClients.end(), clientName);
+                    if(eventClient != waitingClients.end())
+                        waitingClients.erase(eventClient);
+
+                }
             }
             break;
         case 3:
-            std::cout << timeEvent << " 3 " << clientName << '\n';
             error = ClientUnknown;
             if (clients.contains(clientName))
                 error = NoErrors;
@@ -75,14 +76,13 @@ std::string Event::runEvent() {
                         waitingClients.push_back(clientName);
                 }
                 else if(waitingClients.size() > computers.size())
-                    std::cout << timeEvent << " 11 " << clientName << '\n';
+                    result = timeEvent + " 11 " + clientName + '\n';
                 else
                 if(std::find(waitingClients.begin(), waitingClients.end(), clientName) == waitingClients.end())
                     waitingClients.push_back(clientName);
             }
             break;
         case 4:
-            std::cout << timeEvent << " 4 " << clientName << '\n';
             error = ClientUnknown;
             if (clients.contains(clientName))
                 error = NoErrors;
@@ -100,7 +100,7 @@ std::string Event::runEvent() {
 
                         computers[table].busyOn(client, timeEvent);
                         clients[client] = table + 1;
-                        std::cout << timeEvent << " 12 " << clientName << ' ' << tableNumber << '\n';
+                        result = timeEvent + " 12 " + clientName + ' ' + std::to_string(tableNumber) + '\n';
                     }
                 }
                 else {
