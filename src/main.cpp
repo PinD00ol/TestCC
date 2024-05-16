@@ -28,15 +28,12 @@ bool isRightTime(const std::string& time) {
     if(time.size() == 5) {
         for (int i = 0; i < 5; ++i) {
             switch (i) {
-                case 0:
-                case 1:
-                case 3:
-                case 4:
-                    if (time[i] < '0' || time[i] > '9')
-                        result = false;
-                    break;
                 case 2:
                     if (time[i] != ':')
+                        result = false;
+                    break;
+                default:
+                    if (time[i] < '0' || time[i] > '9')
                         result = false;
                     break;
             }
