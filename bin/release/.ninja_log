@@ -1,0 +1,6 @@
+# ninja log v5
+6	669	7375731742514993	CMakeFiles/TaskCC.dir/src/computer.cpp.obj	bbb6744738213041
+3	840	7375731744225377	CMakeFiles/TaskCC.dir/src/main.cpp.obj	4360a38f3dc05994
+12	912	7375731744955544	CMakeFiles/TaskCC.dir/src/insertion.cpp.obj	333dfb8aae0ec609
+9	1553	7375731751357731	CMakeFiles/TaskCC.dir/src/event.cpp.obj	dd85169d615758e0
+1553	1639	7375731752197921	TaskCC.exe	e63360a68f2a9a43
