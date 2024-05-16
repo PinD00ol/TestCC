@@ -8,6 +8,7 @@ int main(int argc, char** argv) {
     unsigned int tablesCount, rate;
     std::string timeStart, timeEnd;
     std::queue<Event> events;
+    std::vector<Computer> computers;
 
     if (argc > 1)
         file.open(argv[1]);
@@ -24,7 +25,9 @@ int main(int argc, char** argv) {
     }
     file.close();
 
-    Event::vectorComputers(tablesCount, rate);
+    for (unsigned int i = 1; i <= tablesCount; i++)
+        computers.emplace_back(i, rate);
+
     Event::timeStartEnd(timeStart, timeEnd);
 
     std::cout << timeStart << '\n';
@@ -32,17 +35,19 @@ int main(int argc, char** argv) {
         std::string time = events.front().time();
         if(time > timeEnd)
             break;
-        std::cout << events.front().lineEvent() << events.front().runEvent();
+        std::cout << events.front().lineEvent() << events.front().runEvent(computers);
         events.pop();
     }
 
-    Event::kickClients();
+    Event::kickClients(computers);
     while (!events.empty()) { //Если остались события, чьё время после закрытия
-        events.front().runEvent();
+        events.front().runEvent(computers);
         events.pop();
     }
     std::cout << timeEnd << '\n';
-    Event::paymentComputers();
+
+    for (const auto& computer: computers)
+        std::cout << computer.computerNumber() << ' ' << computer.computerPayment() << ' ' << computer.time() << '\n';
 
     return 0;
 }

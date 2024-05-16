@@ -18,7 +18,7 @@ std::string Event::lineEvent() {
         + (tableNumber == 0 ? "\n" : ' ' + std::to_string(tableNumber) + '\n');
 }
 
-std::string Event::runEvent() {
+std::string Event::runEvent(std::vector<Computer>& computers) {
     Errors error = NoErrors;
     std::string result = "";
     switch (idEvent) {
@@ -111,11 +111,6 @@ std::string Event::runEvent() {
     return result;
 }
 
-void Event::vectorComputers(unsigned int tablesCount, unsigned int rate) {
-    for (unsigned int i = 1; i <= tablesCount; i++)
-        computers.emplace_back(i, rate);
-}
-
 void Event::timeStartEnd(std::string start, std::string end) {
     timeStart = start;
     timeEnd = end;
@@ -143,7 +138,7 @@ std::string Event::errorOutput(Errors error) {
     return timeEvent + " 13 " + errString;
 }
 
-void Event::kickClients() {
+void Event::kickClients(std::vector<Computer>& computers) {
     for (const auto& client: clients) {
         if(client.second != 0)
             computers[client.second - 1].busyOff(timeEnd);
@@ -153,12 +148,6 @@ void Event::kickClients() {
     clients.clear();
 }
 
-void Event::paymentComputers() {
-    for (const auto& computer: computers)
-        std::cout << computer.computerNumber() << ' ' << computer.computerPayment() << ' ' << computer.time() << '\n';
-}
-
-std::vector<Computer> Event::computers;
 std::map<std::string, unsigned int> Event::clients;
 std::list<std::string> Event::waitingClients;
 std::string Event::timeStart = "00:00";
