@@ -4,28 +4,31 @@ project(TestCC)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_executable(
+        TaskCC
+        src/main.cpp
+        src/computer.cpp
+        src/event.cpp
+        src/insertion.cpp
+)
+
+project(Tests)
+
 add_subdirectory(
         "${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest"
         "googletest"
 )
-
 add_executable(
-        TestCC
-        src/main.cpp
-        src/computer.cpp
+        tests
+        tests/insertion_test.cpp
         src/event.cpp
-)
-
-enable_testing()
-
-add_executable(
-        hello_test
-        tests/hello_test.cc
+        src/computer.cpp
+        src/insertion.cpp
 )
 target_link_libraries(
-        hello_test
+        tests
         GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(tests)
