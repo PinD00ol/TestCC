@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "event.hpp"
-#include "insertion.h"
+#include "insertion.hpp"
 
 int main(int argc, char** argv) {
     std::ifstream file;

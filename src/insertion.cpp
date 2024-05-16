@@ -1,4 +1,4 @@
-#include "insertion.h"
+#include "insertion.hpp"
 #include "event.hpp"
 
 bool isPositiveInteger(const std::string& research) {
@@ -101,6 +101,8 @@ std::queue<Event> inputEvents(std::ifstream& file,unsigned int& tablesCount, uns
         }
         else
             numberTable = 0;
+        if(!events.empty() && timeEvent < events.back().time())
+            throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
         events.emplace(idEvent, numberTable, clientName, timeEvent);
         lineNumber++;
     }

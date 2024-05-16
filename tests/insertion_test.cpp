@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "../src/insertion.h"
+#include "../src/insertion.hpp"
 #include "gtest/gtest.h"
 
 TEST(InsertionTest, ReturnedEvents) {
@@ -115,6 +115,7 @@ TEST(InsertionTest, WrongEventException) {
     std::filesystem::path p = std::filesystem::current_path();
     std::vector<std::string> paths;
     paths.emplace_back(p.string() + "/../../examples/wrong time event.txt");
+    paths.emplace_back(p.string() + "/../../examples/lesser time event.txt");
     paths.emplace_back(p.string() + "/../../examples/wrong id event.txt");
     paths.emplace_back(p.string() + "/../../examples/wrong client name.txt");
     paths.emplace_back(p.string() + "/../../examples/empty number table.txt");
