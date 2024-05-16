@@ -114,11 +114,7 @@ std::string Event::runEvent() {
     return result;
 }
 
-Computer Event::computer(unsigned int n) {
-    return n >= computers.size() ? Computer(0, 0) : computers[n];
-}
-
-void Event::vectorComputers(unsigned int tablesCount, unsigned int rate) {
+void Event::vectorComputers(size_t tablesCount, unsigned int rate) {
     for (int i = 1; i <= tablesCount; i++)
         computers.emplace_back(i, rate);
 }

@@ -16,8 +16,7 @@ public:
     std::string lineEvent();
     std::string runEvent();
 
-    static Computer computer(unsigned int n);
-    static void vectorComputers(unsigned int tablesCount, unsigned int rate);
+    static void vectorComputers(size_t tablesCount, unsigned int rate);
     static void timeStartEnd(std::string start, std::string end);
     static void kickClients();
     static void paymentComputers();
