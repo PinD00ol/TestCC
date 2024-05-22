@@ -14,8 +14,8 @@ public:
 
     bool isBusy() const;
 
-    void busyOn(std::string name, std::string time); //выдать компьютер клиенту
-    void busyOff(std::string time); //забрать компьютер у клиента и подсчитать выручку и время работы
+    void busyOn(const std::string &name, const std::string &time); //выдать компьютер клиенту
+    void busyOff(const std::string &time); //забрать компьютер у клиента и подсчитать выручку и время работы
 
 private:
     unsigned int number;

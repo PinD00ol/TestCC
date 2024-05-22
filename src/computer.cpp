@@ -36,7 +36,7 @@ bool Computer::isBusy() const {
     return busy;
 }
 
-void Computer::busyOn(std::string name, std::string time) {
+void Computer::busyOn(const std::string &name, const std::string &time) {
     if(!busy) {
         timeStartHours = (time[0] - 48) * 10 + time[1] - 48;
         timeStartMinutes = (time[3] - 48) * 10 + time[4] - 48;
@@ -46,7 +46,7 @@ void Computer::busyOn(std::string name, std::string time) {
     }
 }
 
-void Computer::busyOff(std::string time) {
+void Computer::busyOff(const std::string &time) {
     if(busy) {
         int timeHours = (time[0] - 48) * 10 + time[1] - 48;
         int timeMinutes = (time[3] - 48) * 10 + time[4] - 48;

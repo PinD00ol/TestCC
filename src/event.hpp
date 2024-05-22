@@ -10,13 +10,13 @@
 
 class Event {
 public:
-    Event(int id, unsigned int table, std::string name, std::string time);
+    Event(int id, unsigned int table, const std::string &name, const std::string &time);
 
     std::string time(); //возвращает время события
     std::string lineEvent(); //возвращает строку входящего события для вывода в консоль (и проверки тестами)
     std::string runEvent(std::vector<Computer>& computers); //возвращает строку исходящего события для вывода в консоль (и проверки тестами)
 
-    static void timeStartEnd(std::string start, std::string end);
+    static void timeStartEnd(const std::string &start, const std::string &end);
     static void kickClients(std::vector<Computer>& computers); //очищает список клиентов и выводит их на консоль как исходящее событие с id 11
 
 private:
@@ -30,5 +30,5 @@ private:
     std::string clientName;
     std::string timeEvent;
 
-    std::string errorOutput(Errors error);
+    std::string errorOutput(Errors error) const;
 };

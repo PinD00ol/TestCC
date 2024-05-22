@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "event.hpp"
 
-Event::Event(int id, unsigned int table, std::string name, std::string time) {
+Event::Event(int id, unsigned int table, const std::string &name, const std::string &time) {
     idEvent = id;
     clientName = name;
     tableNumber = table;
@@ -111,12 +111,12 @@ std::string Event::runEvent(std::vector<Computer>& computers) {
     return result;
 }
 
-void Event::timeStartEnd(std::string start, std::string end) {
+void Event::timeStartEnd(const std::string &start, const std::string &end) {
     timeStart = start;
     timeEnd = end;
 }
 
-std::string Event::errorOutput(Errors error) {
+std::string Event::errorOutput(Errors error) const {
     std::string errString;
     switch (error) {
         case NotOpenYet:
