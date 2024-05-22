@@ -88,7 +88,8 @@ std::queue<Event> inputEvents(std::ifstream& file,unsigned int& tablesCount, uns
     lineElements.push_back(line);
     line = "";
 
-    if (lineElements.size() != 2 || !isRightTime(lineElements[0]) || !isRightTime(lineElements[1])) {
+    if (lineElements.size() != 2 || !isRightTime(lineElements[0]) || !isRightTime(lineElements[1])
+        || lineElements[1] < lineElements[0]) {
         for (const auto & lineElement : lineElements)
             line += lineElement + " ";
         throw std::invalid_argument(line);
