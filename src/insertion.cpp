@@ -7,7 +7,7 @@ bool isPositiveInteger(const std::string& research) {
         if (research[0] < '1' || research[0] > '9')
             result = false;
         else {
-            for (int i = 1; i < research.size(); ++i) {
+            for (size_t i = 1; i < research.size(); ++i) {
                 if (research[i] < '0' || research[i] > '9') {
                     result = false;
                     break;
@@ -25,7 +25,7 @@ bool isRightTime(const std::string& time) {
     if (time.size() == 5) {
         if (time[0] < '0' || time[0] > '2')
             result = false;
-        else if (time[1] < '0' || time[1] > '9' || time[0] == '2' && time[1] > '3')
+        else if (time[1] < '0' || time[1] > '9' || (time[0] == '2' && time[1] > '3'))
             result = false;
         else if (time[2] != ':')
             result = false;
