@@ -20,3 +20,8 @@
 В папке tests находятся реализованные тесты, а также исходники для проверки обработчика текстовых файлов.
 
 Программа и тесты компилировались с помощью компилятора g++.
+
+##инструкция по компиляции:
+1) Зайти в терминале в корневую папку проекта
+2) Для компиляции программы написать g++ -std=c++20 -O3 src/main.cpp src/insertion.cpp src/event.cpp src/computer.cpp -o bin/task
+3) Для компиляции тестов написать g++ -std=c++20 tests/computer_test.cpp tests/event_test.cpp tests/insertion_test.cpp src/insertion.cpp src/event.cpp src/computer.cpp -o bin/tests/tests
