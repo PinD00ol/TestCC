@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 
     Event::kickClients(computers);
     while (!events.empty()) { //Если остались события, чьё время после закрытия
-        events.front().runEvent(computers);
+        std::cout << events.front().lineEvent() << events.front().runEvent(computers);
         events.pop();
     }
     std::cout << timeEnd << '\n';
