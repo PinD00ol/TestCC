@@ -66,45 +66,103 @@ bool isID(const std::string& research) {
 }
 
 std::queue<Event> inputEvents(std::ifstream& file,unsigned int& tablesCount, unsigned int& rate, std::string& timeStart, std::string& timeEnd) {
-    std::string research;
+    std::string line;
+    std::string del = " ";
     std::queue<Event> events;
-    file >> research;
-    if(!isPositiveInteger(research))
-        throw std::invalid_argument("Mistake in the line 1!\n");
-    tablesCount = std::stoi(research);
+    std::vector<std::string> lineElements;
+    size_t pos;
 
-    file >> timeStart >> timeEnd;
-    if(!isRightTime(timeStart) || !isRightTime(timeEnd))
-        throw std::invalid_argument("Mistake in the line 2!\n");
+    std::getline(file, line);
+    if (!isPositiveInteger(line))
+        throw std::invalid_argument(line);
+    tablesCount = std::stoi(line);
 
-    file >> research;
-    if(!isPositiveInteger(research))
-        throw std::invalid_argument("Mistake in the line 3!\n");
-    rate = std::stoi(research);
 
-    unsigned int lineNumber = 4;
-    while (file.good()) {
+    std::getline(file, line);
+    pos = line.find(del);
+    while ( pos != std::string::npos) {
+        lineElements.push_back(line.substr(0, pos));
+        line.erase(0, pos + 1);
+        pos = line.find(del);
+    }
+    lineElements.push_back(line);
+    line = "";
+
+    if (lineElements.size() != 2 || !isRightTime(lineElements[0]) || !isRightTime(lineElements[1])) {
+        for (const auto & lineElement : lineElements)
+            line += lineElement + " ";
+        throw std::invalid_argument(line);
+    }
+    timeStart = lineElements[0];
+    timeEnd = lineElements[1];
+    lineElements.clear();
+
+
+    std::getline(file, line);
+    if (!isPositiveInteger(line))
+        throw std::invalid_argument(line);
+    rate = std::stoi(line);
+
+
+    while (std::getline(file, line)) {
         std::string timeEvent, clientName;
         int idEvent;
         unsigned int numberTable;
-        file >> timeEvent >> research >> clientName;
-        if (!isRightTime(timeEvent) || !isID(research) || !isRightName(clientName))
-            throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
-        idEvent = std::stoi(research);
-        if (idEvent == 2) {
-            file >> research;
-            if(!isPositiveInteger(research))
-                throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
-            numberTable = std::stoi(research);
-            if(numberTable > tablesCount)
-                throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
+
+        pos = line.find(del);
+        while ( pos != std::string::npos) {
+            lineElements.push_back(line.substr(0, pos));
+            line.erase(0, pos + 1);
+            pos = line.find(del);
+        }
+        lineElements.push_back(line);
+        line = "";
+
+        if (lineElements.size() != 3 && lineElements.size() != 4) {
+            for (const auto & lineElement : lineElements)
+                line += lineElement + " ";
+            throw std::invalid_argument(line);
+        }
+
+        if (!isRightTime(lineElements[0]) || !isID(lineElements[1]) || !isRightName(lineElements[2])) {
+            for (const auto & lineElement : lineElements)
+                line += lineElement + " ";
+            throw std::invalid_argument(line);
+        }
+
+        if ((lineElements[1] == "2" && lineElements.size() == 3) || (lineElements[1] != "2" && lineElements.size() == 4)) {
+            for (const auto & lineElement : lineElements)
+                line += lineElement + " ";
+            throw std::invalid_argument(line);
+        }
+
+        timeEvent = lineElements[0];
+        idEvent = std::stoi(lineElements[1]);
+        clientName = lineElements[2];
+
+        if(!events.empty() && timeEvent < events.back().time()) {
+            for (const auto & lineElement : lineElements)
+                line += lineElement + " ";
+            throw std::invalid_argument(line);
+        }
+
+        if(idEvent == 2) {
+            if(!isPositiveInteger(lineElements[3])) {
+                for (const auto & lineElement : lineElements)
+                    line += lineElement + " ";
+                throw std::invalid_argument(line);
+            }
+            numberTable = std::stoi(lineElements[3]);
+            if (numberTable > tablesCount) {
+                for (const auto & lineElement : lineElements)
+                    line += lineElement + " ";
+                throw std::invalid_argument(line);
+            }
         }
         else
             numberTable = 0;
-        if(!events.empty() && timeEvent < events.back().time())
-            throw std::invalid_argument("Mistake in the line " + std::to_string(lineNumber) + "!\n");
         events.emplace(idEvent, numberTable, clientName, timeEvent);
-        lineNumber++;
+        lineElements.clear();
     }
     return events;
 }

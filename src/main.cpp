@@ -32,8 +32,7 @@ int main(int argc, char** argv) {
 
     std::cout << timeStart << '\n';
     while (!events.empty()) {
-        std::string time = events.front().time();
-        if(time > timeEnd)
+        if(std::string time = events.front().time(); time > timeEnd)
             break;
         std::cout << events.front().lineEvent() << events.front().runEvent(computers);
         events.pop();
