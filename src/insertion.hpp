@@ -1,3 +1,4 @@
+#pragma once
 #include <queue>
 #include <fstream>
 #include "event.hpp"
